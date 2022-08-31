@@ -20,7 +20,7 @@ class BookCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    var viewModel: BookOverview = BookOverview(id: 0, listId: 0, title: "", img: "") {
+    var viewModel: Book = Book(id: 0, listId: 0, title: "", img: "") {
         didSet {
             titleLabel.text = viewModel.title
             fetchTask = imageView.load(img: viewModel.img, withTransitionView: imageView)

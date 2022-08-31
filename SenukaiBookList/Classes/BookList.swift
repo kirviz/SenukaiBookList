@@ -10,5 +10,5 @@ import Foundation
 
 struct BookList: Decodable {
     let list: List
-    let books: [BookOverview]
+    let books: [Book]
 }

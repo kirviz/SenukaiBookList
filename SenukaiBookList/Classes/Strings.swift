@@ -9,6 +9,11 @@
 import Foundation
 
 enum Strings {
-    static let homeScreenTitle = "Book Lists Overview"
+    static let homeScreenTitle = "Home"
     static let allButton = "ALL"
+    static let pullToRefresh = "Pull down & release to refresh"
+    static let publicationDateCaption = "Published:"
+    static let isbn = "ISBN:"
+    
+    static let errorMessage = "An error has occured, please pull down to try again or let us know the error message bellow:\n\n"
 }

@@ -13,13 +13,19 @@ import RxCocoa
 
 class HomeViewController: UIViewController {
     
-//    private var overviewViewModels = [OverviewViewModel(), OverviewViewModel()]
-    
-    private let viewModel = HomeViewModel()
-    
+    private let viewModel: HomeViewModel
     private var bookLists: [BookList] = []
-    
+
     private let disposeBag = DisposeBag()
+    
+    init(homeViewModel: HomeViewModel) {
+        self.viewModel = homeViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: Views
     
@@ -36,13 +42,26 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         return tableView
     }()
+    
+    private lazy var errorLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle =  NSAttributedString(string: Strings.pullToRefresh)
+        refreshControl.addTarget(self, action: #selector(self.pullDown), for: .valueChanged)
+        return refreshControl
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = Strings.homeScreenTitle
         layout()
-        viewModel.fetchBooksOverviewState()
+        viewModel.fetchBooksAndLists()
         viewModel.stateObservable
             .bind { [weak self] state in
                 self?.render(state: state)
@@ -50,7 +69,26 @@ class HomeViewController: UIViewController {
     }
 }
 
+// MARK: - Refresh
+
+extension HomeViewController {
+    @objc func pullDown() {
+        // a crazy way to make the refresh happen on release
+        perform(#selector(self.refresh), with: nil, afterDelay: 0, inModes: [.default])
+    }
+    
+    @objc func refresh() {
+        if refreshControl.isRefreshing {
+            DispatchQueue.main.async { [weak self] in
+                self?.refreshControl.endRefreshing()
+                self?.viewModel.fetchBooksAndLists()
+            }
+        }
+    }
+}
+
 // MARK: - Render
+
 extension HomeViewController {
     func render(state: HomeViewModel.State) {
         switch state {
@@ -58,11 +96,16 @@ extension HomeViewController {
             break
         case .loading:
             activityIndicator.startAnimating()
+            errorLabel.isHidden = true
             bookLists = []
-        case .error(_):
+            tableView.reloadData()
+        case .error(let error):
             activityIndicator.stopAnimating()
+            errorLabel.isHidden = false
+            errorLabel.text = Strings.errorMessage + "\(error)"
         case .loaded(let bookLists):
             activityIndicator.stopAnimating()
+            errorLabel.isHidden = true
             self.bookLists = bookLists
             self.tableView.reloadData()
         }
@@ -108,6 +151,8 @@ extension HomeViewController {
     private func layout() {
         view.addSubview(tableView)
         view.addSubview(activityIndicator)
+        view.addSubview(errorLabel)
+        tableView.refreshControl = refreshControl
         
         activityIndicator.snp.makeConstraints { make in
             make.centerY.centerX.equalToSuperview()
@@ -115,6 +160,11 @@ extension HomeViewController {
         
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        errorLabel.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
     }
 }

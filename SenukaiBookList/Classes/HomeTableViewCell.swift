@@ -8,11 +8,15 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class HomeTableViewCell: UITableViewCell {
     static var reuseIdentifier: String {
         return String(describing: self)
     }
+    
+    private let disposeBag = DisposeBag()
 
     var viewModel: BookList = BookList(list: List(id: 0, title: ""), books: []) {
         didSet {
@@ -47,6 +51,9 @@ class HomeTableViewCell: UITableViewCell {
     private lazy var button: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(Strings.allButton, for: .normal)
+        button.rx.tap.bind { [weak self] in
+            print("tap")
+        }.disposed(by: disposeBag)
         return button
     }()
     
@@ -61,6 +68,7 @@ class HomeTableViewCell: UITableViewCell {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(BookCollectionViewCell.self, forCellWithReuseIdentifier: BookCollectionViewCell.reuseIdentifier)
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
         collectionView.contentInset = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: spacing)
@@ -98,6 +106,15 @@ extension HomeTableViewCell: UICollectionViewDataSource {
         cell.viewModel = viewModel.books[indexPath.row]
         
         return cell
+    }
+}
+
+// MARK: - Collection View Delegate
+
+extension HomeTableViewCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let book = viewModel.books[indexPath.row]
+        Navigator.shared.showDetails(book: book)
     }
 }
 

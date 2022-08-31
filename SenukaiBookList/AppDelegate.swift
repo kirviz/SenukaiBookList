@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = UIWindow(frame: UIScreen.main.bounds)
         if (!isRunningTests()) {
-            window?.rootViewController = UINavigationController(rootViewController: HomeViewController())
+            window?.rootViewController = Navigator.shared.rootViewController
             window?.makeKeyAndVisible()
         }
         
