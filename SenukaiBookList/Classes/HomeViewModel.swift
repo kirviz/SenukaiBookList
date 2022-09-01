@@ -23,9 +23,6 @@ class HomeViewModel {
         return state.asObservable()
     }
     
-    private let loading = BehaviorRelay<Bool>(value: false)
-    private let error = BehaviorRelay<Error?>(value: nil)
-    private let bookLists = BehaviorRelay<[BookList]>(value: [])
     private let state = BehaviorRelay<State>(value: .idle)
     
     private let apiClient: ApiClient
@@ -45,8 +42,6 @@ class HomeViewModel {
         bookLists
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] (bookLists: [BookList]) in
-                self?.bookLists.accept(bookLists)
-                
                 let trimmedBookLists = bookLists.map { bookList in
                     BookList(list: bookList.list, books: Array(bookList.books.prefix(5)))
                 }
@@ -63,7 +58,7 @@ class HomeViewModel {
             return book.listId
         }
         return lists.map { list in
-            BookList(list: list, books: groupedBooks[list.id]!)
+            BookList(list: list, books: groupedBooks[list.id] ?? [])
         }
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Book: Decodable {
+struct Book: Decodable, Equatable {
     let id: Int
     let listId: Int
     let title: String
