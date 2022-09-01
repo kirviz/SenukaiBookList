@@ -18,9 +18,9 @@ class HomeTableViewCell: UITableViewCell {
     
     private let disposeBag = DisposeBag()
 
-    var viewModel: BookList = BookList(list: List(id: 0, title: ""), books: []) {
+    var bookList: BookList = BookList(list: List(id: 0, title: ""), books: []) {
         didSet {
-            titleLabel.text = viewModel.list.title
+            titleLabel.text = bookList.list.title
             collectionView.reloadData()
         }
     }
@@ -52,7 +52,10 @@ class HomeTableViewCell: UITableViewCell {
         let button = UIButton(type: .system)
         button.setTitle(Strings.allButton, for: .normal)
         button.rx.tap.bind { [weak self] in
-            print("tap")
+            guard let bookList = self?.bookList else {
+                return
+            }
+            Navigator.shared.showList(list: bookList)
         }.disposed(by: disposeBag)
         return button
     }()
@@ -76,7 +79,10 @@ class HomeTableViewCell: UITableViewCell {
     }()
     
     private var collectionItemSize: CGSize {
-        let width = UIScreen.main.bounds.width / 2.5
+        // I initially did this relative to screen size
+        // but later figured it's actually nicer if the bigger screen gets more books in
+        // leaving the commented out code for experimentation
+        let width: CGFloat = 120 //UIScreen.main.bounds.width / 2.5
         return CGSize(width: width, height: width * 1.5 + 50)
     }
 
@@ -97,13 +103,13 @@ class HomeTableViewCell: UITableViewCell {
 
 extension HomeTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.books.count
+        return bookList.books.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookCollectionViewCell.reuseIdentifier, for: indexPath) as! BookCollectionViewCell
         
-        cell.viewModel = viewModel.books[indexPath.row]
+        cell.book = bookList.books[indexPath.row]
         
         return cell
     }
@@ -113,7 +119,7 @@ extension HomeTableViewCell: UICollectionViewDataSource {
 
 extension HomeTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let book = viewModel.books[indexPath.row]
+        let book = bookList.books[indexPath.row]
         Navigator.shared.showDetails(book: book)
     }
 }
@@ -133,7 +139,7 @@ extension HomeTableViewCell {
         collectionView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(collectionItemSize)
+            make.height.equalTo(collectionItemSize.height)
         }
     }
 }

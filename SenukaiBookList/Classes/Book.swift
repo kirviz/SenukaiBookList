@@ -54,8 +54,4 @@ struct Book: Decodable {
         self.publicationDateString = publicationDateString
         self.description = description
     }
-    
-    init(overview: Book) {
-        self.init(id: overview.id, listId: overview.listId, title: overview.title, img: overview.img)
-    }
 }

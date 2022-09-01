@@ -20,10 +20,10 @@ class BookCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    var viewModel: Book = Book(id: 0, listId: 0, title: "", img: "") {
+    var book: Book = Book(id: 0, listId: 0, title: "", img: "") {
         didSet {
-            titleLabel.text = viewModel.title
-            fetchTask = imageView.load(img: viewModel.img, withTransitionView: imageView)
+            titleLabel.text = book.title
+            fetchTask = imageView.load(img: book.img, withTransitionView: imageView)
         }
     }
     

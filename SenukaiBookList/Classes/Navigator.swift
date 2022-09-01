@@ -15,13 +15,17 @@ class Navigator {
     private let navigationController: UINavigationController
     
     private init() {
-        navigationController = UINavigationController(rootViewController: HomeViewController(homeViewModel: homeViewModel))
+        navigationController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
     }
     
     var rootViewController: UIViewController {
         return navigationController
     }
-    
+
+    func showList(list: BookList) {
+        navigationController.pushViewController(ListViewController(viewModel: homeViewModel, bookList: list), animated: true)
+    }
+
     func showDetails(book: Book) {
         let detailsViewModel = DetailsViewModel(book: book)
         navigationController.pushViewController(DetailsViewController(viewModel: detailsViewModel), animated: true)

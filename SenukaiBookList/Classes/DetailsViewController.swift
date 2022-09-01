@@ -148,7 +148,7 @@ class DetailsViewController: UIViewController {
         view.backgroundColor = .white
         layout()
         
-        viewModel.state
+        viewModel.stateObservable
             .bind { [weak self] state in
                 self?.render(state: state)
             }.disposed(by: disposeBag)

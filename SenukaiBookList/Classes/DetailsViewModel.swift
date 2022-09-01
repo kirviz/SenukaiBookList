@@ -19,10 +19,15 @@ class DetailsViewModel {
     }
     
     var book: Book
-    let state: BehaviorRelay<State>
     
-    let apiClient: ApiClient
-    let disposeBag = DisposeBag()
+    var stateObservable: Observable<State> {
+        return state.asObservable()
+    }
+    
+    private let state: BehaviorRelay<State>
+    
+    private let apiClient: ApiClient
+    private let disposeBag = DisposeBag()
     
     init(book: Book, apiClient: ApiClient = ApiClient()) {
         self.book = book

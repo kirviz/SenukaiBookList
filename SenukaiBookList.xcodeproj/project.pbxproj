@@ -10,6 +10,8 @@
 		7700ACF228BE0C870009F3D6 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700ACF128BE0C870009F3D6 /* DetailsViewController.swift */; };
 		7700ACF428BE218B0009F3D6 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700ACF328BE218B0009F3D6 /* Navigator.swift */; };
 		7700AD3528BFABDA0009F3D6 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3428BFABDA0009F3D6 /* DetailsViewModel.swift */; };
+		7700AD3828BFDCFD0009F3D6 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3728BFDCFD0009F3D6 /* ListViewController.swift */; };
+		7700AD3B28BFEDBC0009F3D6 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3A28BFEDBC0009F3D6 /* ListTableViewCell.swift */; };
 		771CAC7528BB5F2C00E2C7D3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771CAC7428BB5F2C00E2C7D3 /* HomeViewController.swift */; };
 		771CAC7728BB604700E2C7D3 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771CAC7628BB604700E2C7D3 /* HomeTableViewCell.swift */; };
 		771CAC7928BBC1F000E2C7D3 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771CAC7828BBC1F000E2C7D3 /* BookCollectionViewCell.swift */; };
@@ -69,6 +71,8 @@
 		7700ACF128BE0C870009F3D6 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		7700ACF328BE218B0009F3D6 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		7700AD3428BFABDA0009F3D6 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
+		7700AD3728BFDCFD0009F3D6 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		7700AD3A28BFEDBC0009F3D6 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		771CAC7428BB5F2C00E2C7D3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		771CAC7628BB604700E2C7D3 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		771CAC7828BBC1F000E2C7D3 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -128,6 +132,15 @@
 				7700ACF128BE0C870009F3D6 /* DetailsViewController.swift */,
 			);
 			name = DetailsScreen;
+			sourceTree = "<group>";
+		};
+		7700AD3928BFDD070009F3D6 /* ListScreen */ = {
+			isa = PBXGroup;
+			children = (
+				7700AD3728BFDCFD0009F3D6 /* ListViewController.swift */,
+				7700AD3A28BFEDBC0009F3D6 /* ListTableViewCell.swift */,
+			);
+			name = ListScreen;
 			sourceTree = "<group>";
 		};
 		771CAC8828BCEE6100E2C7D3 /* HomeScreen */ = {
@@ -198,8 +211,9 @@
 		77452C3F1ECCF7880062781E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7700AD3628BFABF60009F3D6 /* DetailsScreen */,
 				771CAC8828BCEE6100E2C7D3 /* HomeScreen */,
+				7700AD3928BFDD070009F3D6 /* ListScreen */,
+				7700AD3628BFABF60009F3D6 /* DetailsScreen */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -358,10 +372,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7700AD3828BFDCFD0009F3D6 /* ListViewController.swift in Sources */,
 				77452BE01ECC4C450062781E /* AppDelegate.swift in Sources */,
 				771CAC7928BBC1F000E2C7D3 /* BookCollectionViewCell.swift in Sources */,
 				771CAC8328BCE1EE00E2C7D3 /* Book.swift in Sources */,
 				771CAC7D28BCAC1200E2C7D3 /* List.swift in Sources */,
+				7700AD3B28BFEDBC0009F3D6 /* ListTableViewCell.swift in Sources */,
 				77A9CFA328B615ED00F93AA8 /* Strings.swift in Sources */,
 				7700ACF428BE218B0009F3D6 /* Navigator.swift in Sources */,
 				771CAC7F28BCACF400E2C7D3 /* HomeViewModel.swift in Sources */,

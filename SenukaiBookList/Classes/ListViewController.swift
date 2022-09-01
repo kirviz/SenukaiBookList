@@ -1,25 +1,27 @@
 //
-//  HomeViewController.swift
+//  ListViewController.swift
 //  SenukaiBookList
 //
-//  Created by Darius Jankauskas on 28/08/2022.
+//  Created by Darius Jankauskas on 31/08/2022.
 //  Copyright © 2022 Darius Jankauskas. All rights reserved.
 //
 
 import UIKit
 import SnapKit
 import RxSwift
-import RxCocoa
 
-class HomeViewController: UIViewController {
-    
+class ListViewController: UIViewController {
+
     private let viewModel: HomeViewModel
-    private var bookLists: [BookList] = []
+    private var bookList: BookList
+    private let apiClient = ApiClient()
 
     private let disposeBag = DisposeBag()
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel,
+         bookList: BookList) {
         self.viewModel = viewModel
+        self.bookList = bookList
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,7 +39,7 @@ class HomeViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
-        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.reuseIdentifier)
+        tableView.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.reuseIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
@@ -59,9 +61,10 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.homeScreenTitle
+        title = bookList.list.title
         layout()
-        viewModel.fetchBooksAndLists()
+        tableView.reloadData()
+        
         viewModel.stateObservable
             .bind { [weak self] state in
                 self?.render(state: state)
@@ -71,7 +74,7 @@ class HomeViewController: UIViewController {
 
 // MARK: - Refresh
 
-extension HomeViewController {
+extension ListViewController {
     @objc func pullDown() {
         // a crazy way to make the refresh happen on release
         perform(#selector(self.refresh), with: nil, afterDelay: 0, inModes: [.default])
@@ -89,7 +92,7 @@ extension HomeViewController {
 
 // MARK: - Render
 
-extension HomeViewController {
+extension ListViewController {
     func render(state: HomeViewModel.State) {
         switch state {
         case .idle:
@@ -97,7 +100,7 @@ extension HomeViewController {
         case .loading:
             activityIndicator.startAnimating()
             errorLabel.isHidden = true
-            bookLists = []
+            bookList = BookList(list: bookList.list, books: [])
             tableView.reloadData()
         case .error(let error):
             activityIndicator.stopAnimating()
@@ -106,7 +109,8 @@ extension HomeViewController {
         case .loaded(let bookLists):
             activityIndicator.stopAnimating()
             errorLabel.isHidden = true
-            self.bookLists = bookLists
+            // TODO: fix this (make a dictionary or just run through the list or something)
+            self.bookList = bookLists[bookList.list.id - 1]
             self.tableView.reloadData()
         }
     }
@@ -114,40 +118,47 @@ extension HomeViewController {
 
 // MARK: - Table View Data Source
 
-extension HomeViewController: UITableViewDataSource {
+extension ListViewController: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        bookLists.count
+        bookList.books.count
     }
     
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.reuseIdentifier, for: indexPath) as! HomeTableViewCell
-        
-        cell.bookList = bookLists[indexPath.row]
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.reuseIdentifier, for: indexPath) as! ListTableViewCell
+        cell.book = bookList.books[indexPath.row]
+        // TODO: change to using the viewModel
+        apiClient.makeRequest(endpoint: .book(cell.book.id))
+            .observe(on: MainScheduler.instance)
+            .subscribe { (book: Book) in
+                cell.book = book
+                cell.setNeedsLayout()
+            }.disposed(by: disposeBag)
+
         return cell
     }
 }
 
 // MARK: - Table View Delegate
 
-extension HomeViewController: UITableViewDelegate {
+extension ListViewController: UITableViewDelegate {
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        
+        let book = bookList.books[indexPath.row]
+        Navigator.shared.showDetails(book: book)
     }
 }
 
 // MARK: - Layout
 
-extension HomeViewController {
+extension ListViewController {
     private func layout() {
         view.addSubview(tableView)
         view.addSubview(activityIndicator)
