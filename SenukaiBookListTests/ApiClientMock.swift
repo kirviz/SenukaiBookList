@@ -36,8 +36,13 @@ class ApiClientMock: ApiClient {
             callBack(.success(books as! T))
         case .lists:
             callBack(.success(lists as! T))
-        default:
-            fatalError("mock not implemented")
+        case .book(let bookId):
+            switch bookId {
+            case 1: callBack(.success(M.book1 as! T))
+            case 2: callBack(.success(M.book2 as! T))
+            case 3: callBack(.success(M.book3 as! T))
+            default: callBack(.failure(NetworkingError.malformedRequest))
+            }
         }
     }
 }

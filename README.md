@@ -4,7 +4,7 @@ I used SnapkKit and RxSwift. I used Carthage for dependency management and all d
 
 ```carthage update --no-use-binaries --platform iOS --use-xcframeworks```
 
-- I thought whether I should have multiple observables like `isLoading`, `hasError` and `books` and then just bind them directly to specific views using RxCocoa. The `State` aproach I chose makes less vars in the viewModel but the view now has a render function with a switch statement. There's not much difference in this simple task but when things get complicated, the single state approach tends to stay much more manageable than juggling many observables. This way we only need to keep in mind the state we're at, rather than keeping in mind the states of every observable. In the end this added a bit of trouble, namely writing State equality operators for tests, and State mapping from one state to another (insterad of just mapping one value type). 
+- I thought whether I should have multiple observables like `isLoading`, `hasError` and `books` and then just bind them directly to specific views using RxCocoa. The `State` aproach I chose makes less vars in the viewModel but the view now has a render function with a switch statement. There's not much difference in this simple task but when things get complicated, the single state approach tends to stay much more manageable than juggling many observables. This way we only need to keep in mind the state we're at, rather than keeping in mind the states of every observable. In the end this added a bit of trouble, namely writing State equality operators for tests, and State mapping from one state to another (instead of just mapping one value type). 
 
 - I wrote the ApiClient using callbacks, later I added RxSwift to the project and just made an Rx wrapper for the original method. I think that's quite reasonable. I also ended up using the non-react version of the API client to make a mock.
 
@@ -18,4 +18,10 @@ I used SnapkKit and RxSwift. I used Carthage for dependency management and all d
 
 - I skipped the formal ViewData layer, (i.e. a transformed Model for displaying by the view) and just used the Model directly. Consequently I skipped the `configure(with data:ViewData)` methods for the views too and just used an assignable property instead. Possibly worth changing that in a bigger project. 
 
-- The tests are technically integration rathar then unit in my opinion. And I think it's better that way.
+- I noticed sometimes I store the model in ViewModel and sometimes in View, it would be good to normalize this.
+
+- The tests are technically integration rather then unit in my opinion. And I think it's better that way.
+
+- There is currently no way to store the full book details back into the list for reuse. I left it that way as the database layer was in the planning. 
+
+- The way I would do storing to database if there was more time is to basically have a wrapper for the ApiClient called BookStore perhaps. BookStore could then hold and update the results in memory as well as put into database before passing it back to the caller.

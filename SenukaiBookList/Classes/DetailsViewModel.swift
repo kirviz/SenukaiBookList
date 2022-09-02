@@ -12,7 +12,6 @@ import RxRelay
 
 class DetailsViewModel {
     enum State {
-        case idle
         case loading
         case loaded(Book)
         case error(Error)

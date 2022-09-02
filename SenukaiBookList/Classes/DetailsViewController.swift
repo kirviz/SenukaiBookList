@@ -164,8 +164,6 @@ class DetailsViewController: UIViewController {
 extension DetailsViewController {
     private func render(state: DetailsViewModel.State) {
         switch state {
-        case .idle:
-            break
         case .loading:
             activityIndicator.startAnimating()
             innerStackView.isHidden = true
