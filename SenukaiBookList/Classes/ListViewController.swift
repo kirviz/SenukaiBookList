@@ -9,16 +9,16 @@
 import UIKit
 import SnapKit
 import RxSwift
+import RxCocoa
 
 class ListViewController: UIViewController {
 
-    private let viewModel: HomeViewModel
+    private let viewModel: ListViewModel
     private var bookList: BookList
-    private let apiClient = ApiClient()
 
     private let disposeBag = DisposeBag()
     
-    init(viewModel: HomeViewModel,
+    init(viewModel: ListViewModel,
          bookList: BookList) {
         self.viewModel = viewModel
         self.bookList = bookList
@@ -65,7 +65,7 @@ class ListViewController: UIViewController {
         layout()
         tableView.reloadData()
         
-        viewModel.stateObservable
+        viewModel.stateObservable(listId: bookList.list.id)
             .bind { [weak self] state in
                 self?.render(state: state)
             }.disposed(by: disposeBag)
@@ -84,7 +84,7 @@ extension ListViewController {
         if refreshControl.isRefreshing {
             DispatchQueue.main.async { [weak self] in
                 self?.refreshControl.endRefreshing()
-                self?.viewModel.fetchBooksAndLists()
+                self?.viewModel.refresh()
             }
         }
     }
@@ -93,7 +93,7 @@ extension ListViewController {
 // MARK: - Render
 
 extension ListViewController {
-    func render(state: HomeViewModel.State) {
+    func render(state: ListViewModel.State) {
         switch state {
         case .idle:
             break
@@ -106,11 +106,10 @@ extension ListViewController {
             activityIndicator.stopAnimating()
             errorLabel.isHidden = false
             errorLabel.text = Strings.errorMessage + "\(error)"
-        case .loaded(let bookLists):
+        case .loaded(let bookList):
             activityIndicator.stopAnimating()
             errorLabel.isHidden = true
-            // TODO: fix this (make a dictionary or just run through the list or something)
-            self.bookList = bookLists[bookList.list.id - 1]
+            self.bookList = bookList
             self.tableView.reloadData()
         }
     }
@@ -119,22 +118,17 @@ extension ListViewController {
 // MARK: - Table View Data Source
 
 extension ListViewController: UITableViewDataSource {
-    func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
-    ) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         bookList.books.count
     }
     
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.reuseIdentifier, for: indexPath) as! ListTableViewCell
+        
         cell.book = bookList.books[indexPath.row]
-        // TODO: change to using the viewModel
-        apiClient.makeRequest(endpoint: .book(cell.book.id))
-            .observe(on: MainScheduler.instance)
+        
+        viewModel.loadBook(bookId: cell.book.id)
             .subscribe { (book: Book) in
                 cell.book = book
                 cell.setNeedsLayout()
@@ -147,10 +141,7 @@ extension ListViewController: UITableViewDataSource {
 // MARK: - Table View Delegate
 
 extension ListViewController: UITableViewDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath
-    ) {
+    func tableView( _ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let book = bookList.books[indexPath.row]
         Navigator.shared.showDetails(book: book)
     }

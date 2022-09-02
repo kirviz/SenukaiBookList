@@ -23,7 +23,9 @@ class Navigator {
     }
 
     func showList(list: BookList) {
-        navigationController.pushViewController(ListViewController(viewModel: homeViewModel, bookList: list), animated: true)
+        let viewModel = ListViewModel(homeViewModel: homeViewModel)
+        let controller = ListViewController(viewModel: viewModel, bookList: list)
+        navigationController.pushViewController(controller, animated: true)
     }
 
     func showDetails(book: Book) {

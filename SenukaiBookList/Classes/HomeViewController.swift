@@ -39,7 +39,6 @@ class HomeViewController: UIViewController {
         let tableView = UITableView(frame: .zero)
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.reuseIdentifier)
         tableView.dataSource = self
-        tableView.delegate = self
         return tableView
     }()
     
@@ -115,33 +114,17 @@ extension HomeViewController {
 // MARK: - Table View Data Source
 
 extension HomeViewController: UITableViewDataSource {
-    func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
-    ) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         bookLists.count
     }
     
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.reuseIdentifier, for: indexPath) as! HomeTableViewCell
         
         cell.bookList = bookLists[indexPath.row]
         
         return cell
-    }
-}
-
-// MARK: - Table View Delegate
-
-extension HomeViewController: UITableViewDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath
-    ) {
-        
     }
 }
 

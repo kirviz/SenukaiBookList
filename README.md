@@ -14,8 +14,6 @@ I used SnapkKit and RxSwift. I used Carthage for dependency management and all d
 
 - I made a singleton called Navigator, which takes care of flow control as well as some simple dependency injection, I'd say that's the best solution for this size of the app.
 
-- I considered having 2 models BookOverview and Book and settled with the option of having one model with some fields optional. I think that will make it easier to store results of full book details, whether in memory or in database. 
+- I considered having 2 models BookOverview and Book and went with the option of having one model with some fields optional. It seems to make things simpler.
 
-- I skipped the formal ViewData layer, i.e. transformed model which is ready to be displayed by the view as is and just let the views display the models directly in a way.
-
-- There are TODO comments in the code
+- I skipped the formal ViewData layer, (i.e. a transformed Model for displaying by the view) and just used the Model directly. Consequently I skipped the `configure(with data:ViewData)` methods for the views too and just used an assignable property instead. Possibly worth changing that in a bigger project. 
