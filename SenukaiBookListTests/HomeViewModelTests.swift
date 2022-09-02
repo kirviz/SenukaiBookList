@@ -39,9 +39,7 @@ extension HomeViewModel.State: Equatable {
     }
 }
 
-typealias M = ApiClientMock
-
-class BookListTests: XCTestCase {
+class HomeViewModelTests: XCTestCase {
     var scheduler: TestScheduler!
     var disposeBag: DisposeBag!
     
@@ -142,6 +140,30 @@ class BookListTests: XCTestCase {
         
         XCTAssertEqual(state.events, [
             .next(0, .idle),
+            .next(0, .loading),
+            .next(0, .loaded(bookLists)),
+        ])
+    }
+    
+    func testSuccessfulStateSequenceTwice() throws {
+        let viewModel = HomeViewModel(apiClient: ApiClientMock())
+
+        let state = scheduler.createObserver(HomeViewModel.State.self)
+        
+        viewModel.stateObservable
+          .bind(to: state)
+          .disposed(by: disposeBag)
+        
+        viewModel.fetchBooksAndLists()
+        viewModel.fetchBooksAndLists()
+        
+        let bookLists = [BookList(list: M.list1, books: [M.book1, M.book2]),
+                         BookList(list: M.list2, books: [M.book3])]
+        
+        XCTAssertEqual(state.events, [
+            .next(0, .idle),
+            .next(0, .loading),
+            .next(0, .loaded(bookLists)),
             .next(0, .loading),
             .next(0, .loaded(bookLists)),
         ])

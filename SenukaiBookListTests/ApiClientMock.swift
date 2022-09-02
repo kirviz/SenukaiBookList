@@ -9,6 +9,8 @@
 import XCTest
 @testable import SenukaiBookList
 
+typealias M = ApiClientMock
+
 class ApiClientErrorMock: ApiClient {
     override func makeRequest<T>(endpoint: Endpoint, callBack: @escaping (Result<T, Error>) -> ()) where T : Decodable {
         callBack(.failure(NetworkingError.malformedRequest))

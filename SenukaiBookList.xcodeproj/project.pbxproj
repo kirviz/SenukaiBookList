@@ -12,8 +12,9 @@
 		7700AD3528BFABDA0009F3D6 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3428BFABDA0009F3D6 /* DetailsViewModel.swift */; };
 		7700AD3828BFDCFD0009F3D6 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3728BFDCFD0009F3D6 /* ListViewController.swift */; };
 		7700AD3B28BFEDBC0009F3D6 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3A28BFEDBC0009F3D6 /* ListTableViewCell.swift */; };
-		7700AD3D28C134760009F3D6 /* BookListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3C28C134760009F3D6 /* BookListTests.swift */; };
+		7700AD3D28C134760009F3D6 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3C28C134760009F3D6 /* HomeViewModelTests.swift */; };
 		7700AD3F28C18A7C0009F3D6 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD3E28C18A7C0009F3D6 /* ListViewModel.swift */; };
+		7700AD4128C19A200009F3D6 /* ListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700AD4028C19A200009F3D6 /* ListViewModelTests.swift */; };
 		771CAC7528BB5F2C00E2C7D3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771CAC7428BB5F2C00E2C7D3 /* HomeViewController.swift */; };
 		771CAC7728BB604700E2C7D3 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771CAC7628BB604700E2C7D3 /* HomeTableViewCell.swift */; };
 		771CAC7928BBC1F000E2C7D3 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771CAC7828BBC1F000E2C7D3 /* BookCollectionViewCell.swift */; };
@@ -75,8 +76,9 @@
 		7700AD3428BFABDA0009F3D6 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		7700AD3728BFDCFD0009F3D6 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		7700AD3A28BFEDBC0009F3D6 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
-		7700AD3C28C134760009F3D6 /* BookListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListTests.swift; sourceTree = "<group>"; };
+		7700AD3C28C134760009F3D6 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		7700AD3E28C18A7C0009F3D6 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		7700AD4028C19A200009F3D6 /* ListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModelTests.swift; sourceTree = "<group>"; };
 		771CAC7428BB5F2C00E2C7D3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		771CAC7628BB604700E2C7D3 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		771CAC7828BBC1F000E2C7D3 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -256,7 +258,8 @@
 			isa = PBXGroup;
 			children = (
 				77A9CFA628B6C28200F93AA8 /* ApiClientMock.swift */,
-				7700AD3C28C134760009F3D6 /* BookListTests.swift */,
+				7700AD3C28C134760009F3D6 /* HomeViewModelTests.swift */,
+				7700AD4028C19A200009F3D6 /* ListViewModelTests.swift */,
 			);
 			path = SenukaiBookListTests;
 			sourceTree = "<group>";
@@ -404,8 +407,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7700AD3D28C134760009F3D6 /* BookListTests.swift in Sources */,
+				7700AD3D28C134760009F3D6 /* HomeViewModelTests.swift in Sources */,
 				77A9CFA728B6C28200F93AA8 /* ApiClientMock.swift in Sources */,
+				7700AD4128C19A200009F3D6 /* ListViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
